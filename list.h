@@ -1,10 +1,11 @@
 #pragma once
 #include<iostream>
 
+#include "DataStructure.h"
 #include "node.h"
 #include "data.h"
 
-class List {
+class List :public DataStructure{
 private :
 	Node* head;
 	Node* tail;
@@ -30,12 +31,12 @@ public:
 	Node* getHead() { return this->head; }
 	Node* getTail() { return this->tail; }
 	int getSize() { return this->size; }
-};
 
-int insertNode(List* list, Data* newData);
-int markNode(List* list, List* mList, Data* markData);
-int unmarkNode(List* mList, Data* unmarkData);
-Node* findNodeByPhone(List* list, string pPhone);
-int findNodeByName(List* list, string pName);
-int printList(List* list);
-int rmNode(List* list, List* mList, Data* rmData);
+	int insertNode(Data* newData) override;
+	int markNode(Data* markData)override;
+	int unmarkNode(Data* unmarkData)override;
+	Node* findNodeByPhone(string pPhone)override;
+	int findNodeByName(string pName)override;
+	int print()override;
+	int rmNode(Data* rmData)override;
+};

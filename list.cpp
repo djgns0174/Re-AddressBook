@@ -1,14 +1,14 @@
 #include "list.h"
 
-int insertNode(List* list, Data* newData) {
+int List::insertNode(Data* newData) {
 
-	Node* head = list->getHead();
-	Node* tail = list->getTail();
+	Node* head = getHead();
+	Node* tail = getTail();
 
 	// 리스트에 데이터가 없을때
 	if (head->getNext() == tail) {
 		Node* newNode = new Node(head, tail, newData);
-		list->countSize();
+		countSize();
 		head->setNext(newNode); tail->setPrev(newNode);
 		return 0;
 	}
@@ -17,7 +17,7 @@ int insertNode(List* list, Data* newData) {
 	else {
 		Node* prevNewNode = tail->getPrev();
 		Node* newNode = new Node(prevNewNode, tail, newData);
-		list->countSize();
+		countSize();
 		prevNewNode->setNext(newNode); tail->setPrev(newNode);
 		return 0;
 	}
@@ -25,34 +25,31 @@ int insertNode(List* list, Data* newData) {
 	return 1;
 }
 
-int markNode(List* list, List* mList, Data* markData) {
-	Node* findNode = findNodeByPhone(list, markData->getPhone());
-	if (findNode == NULL) return 1;
-
-	Node* mHead = mList->getHead(); 
-	Node* mTail = mList->getTail();
+int List::markNode(Data* markData) {
+	Node* mHead = getHead(); 
+	Node* mTail = getTail();
 
 	// m리스트에 데이터가 없을때
 	if (mHead->getNext() == mTail) {
 		Node* markNode = new Node(mHead, mTail, markData);
 		mHead->setNext(markNode); mTail->setPrev(markNode);
-		mList->countSize();
+		countSize();
 		return 0;
 	}
 	else {
 		Node* prevMarkNode = mTail->getPrev();
 		Node* markNode = new Node(prevMarkNode, mTail, markData);
 		prevMarkNode->setNext(markNode); mTail->setPrev(markNode);
-		mList->countSize();
+		countSize();
 		return 0;
 	}
 
 	return 1;
 }
 
-int unmarkNode(List* mList, Data* unmarkData) {
+int List::unmarkNode(Data* unmarkData) {
 	string unmarkPhone = unmarkData->getPhone();
-	Node* mfindNode = findNodeByPhone(mList, unmarkPhone);
+	Node* mfindNode = findNodeByPhone(unmarkPhone);
 
 	if (mfindNode == NULL) return 1;
 
@@ -65,10 +62,10 @@ int unmarkNode(List* mList, Data* unmarkData) {
 	return 0;
 }
 
-Node* findNodeByPhone(List* list, string pPhone) {
-	Node* head = list->getHead();
-	Node* tail = list->getTail();
-	Node* curr = list->getHead()->getNext();
+Node* List::findNodeByPhone(string pPhone) {
+	Node* head = getHead();
+	Node* tail = getTail();
+	Node* curr = getHead()->getNext();
 
 	while (curr != tail) {
 		string currPhone = curr->getData()->getPhone();
@@ -80,9 +77,9 @@ Node* findNodeByPhone(List* list, string pPhone) {
 	return NULL;
 }
 
-int findNodeByName(List* list, string pName) {
-	Node* head = list->getHead();
-	Node* tail = list->getTail();
+int List::findNodeByName(string pName) {
+	Node* head = getHead();
+	Node* tail = getTail();
 	Node* curr = head->getNext();
 	while (curr != tail) {
 		string currName = curr->getData()->getName();
@@ -97,9 +94,9 @@ int findNodeByName(List* list, string pName) {
 	return 0;
 }
 
-int printList(List* list) {
-	Node* head = list->getHead();
-	Node* tail = list->getTail();
+int List::print() {
+	Node* head = getHead();
+	Node* tail = getTail();
 
 	Node* curr = head->getNext();
 	if (curr == NULL) return 1;
@@ -116,9 +113,9 @@ int printList(List* list) {
 	return 0;
 }
 
-int rmNode(List* list, List* mList, Data* rmData) {
+int List::rmNode(Data* rmData) {
 	string rmPhone = rmData->getPhone();
-	Node* findNode = findNodeByPhone(list, rmPhone);
+	Node* findNode = findNodeByPhone(rmPhone);
 
 	if (findNode == NULL) return 1;
 	
@@ -127,8 +124,6 @@ int rmNode(List* list, List* mList, Data* rmData) {
 
 	prevFindNode->setNext(nextFindNode);
 	nextFindNode->setPrev(prevFindNode);
-
-	unmarkNode(mList, rmData);
 
 	delete findNode;
 
